@@ -11,7 +11,6 @@ import (
 
 var (
 	gameIDRegex = regexp.MustCompile(`^Game (\d+): `)
-	setRegex    = regexp.MustCompile(`((\d)\s(red|blue|green)),*`)
 )
 
 func SumPossibleGameIds(reader io.Reader, configuration map[string]int) int {
@@ -24,6 +23,23 @@ func SumPossibleGameIds(reader io.Reader, configuration map[string]int) int {
 
 		fmt.Println(id)
 		sum += id
+
+		scan = scanner.Scan()
+	}
+
+	return sum
+}
+
+func SumPowerOfSets(reader io.Reader) int {
+	scanner := bufio.NewScanner(reader)
+
+	var sum int
+
+	for scan := scanner.Scan(); scan; {
+		s := PowerOfLowestPossibleSet(scanner.Text())
+
+		fmt.Println(s)
+		sum += s
 
 		scan = scanner.Scan()
 	}
@@ -57,6 +73,34 @@ func PossibleGameIds(i string, configuration map[string]int) (ID int) {
 	}
 
 	return ID
+}
+
+func PowerOfLowestPossibleSet(i string) (sum int) {
+	fewest := map[string]int{}
+
+	// go trough each set and check if it's possible
+	for _, v := range strings.Split(gameIDRegex.ReplaceAllString(i, ""), ";") {
+		fmt.Printf("handling: %q\n", v)
+
+		for color, amount := range CreateSet(strings.Trim(v, " ")) {
+			if _, ok := fewest[color]; !ok {
+				fewest[color] = amount
+				continue
+			}
+
+			if amount > fewest[color] {
+				fewest[color] = amount
+			}
+		}
+	}
+
+	sum = 1
+
+	for _, v := range fewest {
+		sum *= v
+	}
+
+	return sum
 }
 
 func CreateSet(i string) map[string]int {

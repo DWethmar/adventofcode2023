@@ -9,8 +9,7 @@ import (
 )
 
 var (
-	regex  = regexp.MustCompile(`^.*?(\d|one|two|three|four|five|six|seven|eight|nine)(?:.*(\d|one|two|three|four|five|six|seven|eight|nine))?.*$`)
-	regex2 = regexp.MustCompile(`\d`)
+	regex = regexp.MustCompile(`^.*?(\d|one|two|three|four|five|six|seven|eight|nine)(?:.*(\d|one|two|three|four|five|six|seven|eight|nine))?.*$`)
 )
 
 func CalibrateDocument(reader io.Reader) int {
