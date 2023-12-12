@@ -8,7 +8,10 @@ import (
 	"strconv"
 )
 
-var regex = regexp.MustCompile(`^.*?(\d)(?:.*(\d))?.*$`)
+var (
+	regex  = regexp.MustCompile(`^.*?(\d|one|two|three|four|five|six|seven|eight|nine)(?:.*(\d|one|two|three|four|five|six|seven|eight|nine))?.*$`)
+	regex2 = regexp.MustCompile(`\d`)
+)
 
 func CalibrateDocument(reader io.Reader) int {
 	scanner := bufio.NewScanner(reader)
@@ -23,18 +26,18 @@ func CalibrateDocument(reader io.Reader) int {
 	return sum
 }
 
-// CalibrationValue sums the first and last digit of the string
+// CalibrationValue creates a digit from the first and last digits of a string.
 func CalibrationValue(i string) int {
 	r := regex.FindStringSubmatch(i)
 
 	var first, last string
 
 	if len(r) == 3 {
-		first = r[1]
+		first = ValueToDigit(r[1])
 		if r[2] == "" {
-			last = r[1]
+			last = ValueToDigit(r[1])
 		} else {
-			last = r[2]
+			last = ValueToDigit(r[2])
 		}
 	}
 
@@ -45,4 +48,29 @@ func CalibrationValue(i string) int {
 	}
 
 	return s
+}
+
+func ValueToDigit(i string) string {
+	switch i {
+	case "one":
+		return "1"
+	case "two":
+		return "2"
+	case "three":
+		return "3"
+	case "four":
+		return "4"
+	case "five":
+		return "5"
+	case "six":
+		return "6"
+	case "seven":
+		return "7"
+	case "eight":
+		return "8"
+	case "nine":
+		return "9"
+	}
+
+	return i
 }
