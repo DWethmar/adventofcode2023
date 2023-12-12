@@ -35,7 +35,7 @@ func CalibrationValue(i string) int {
 	if len(r) == 3 {
 		first = ValueToDigit(r[1])
 		if r[2] == "" {
-			last = ValueToDigit(r[1])
+			last = first
 		} else {
 			last = ValueToDigit(r[2])
 		}
